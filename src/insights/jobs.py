@@ -18,5 +18,17 @@ class ProcessJobs:
             unique_job_types.add(job["job_type"])
         return list(unique_job_types)
 
-    def filter_by_multiple_criteria(self) -> List[dict]:
-        pass
+    def filter_by_multiple_criteria(self, jobs, filter_criteria) -> List[dict]:
+        if not isinstance(filter_criteria, dict):
+            raise TypeError("Filtro precisa ser um dicionário")
+
+        filtered_jobs = []
+
+        for job in jobs:
+            if all(
+                job.get(key) == value
+                for key, value in filter_criteria.items()
+            ):
+                filtered_jobs.append(job)
+
+        return filtered_jobs
