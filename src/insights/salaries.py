@@ -6,8 +6,15 @@ class ProcessSalaries(ProcessJobs):
     def __init__(self):
         super().__init__()
 
-    def get_max_salary(self) -> int:
-        pass
+    def get_max_salary(self):
+        salaries = []
+        for job in self.jobs_list:
+            max_salary = job.get("max_salary")
+            if max_salary.isdigit():
+                salaries.append(int(max_salary))
+
+        max_salary = max(salaries)
+        return max_salary
 
     def get_min_salary(self) -> int:
         pass
