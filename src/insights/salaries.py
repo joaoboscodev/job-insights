@@ -34,17 +34,33 @@ class ProcessSalaries(ProcessJobs):
             isinstance(salary, (int, float)) or
             (isinstance(salary, str) and salary.isdigit())
         ):
-            raise ValueError("Salary não numerico")
+            raise ValueError("Salary não numérico")
         if max_salary is None or min_salary is None:
             raise ValueError("Valor nulo")
         if not (str(max_salary).isdigit() and str(min_salary).isdigit()):
             raise ValueError("Valores não numéricos")
-        if min_salary > max_salary:
+        if int(min_salary) > int(max_salary):
             raise ValueError("min_salary > max_salary")
 
-        return min_salary <= int(salary) <= max_salary
+        return int(min_salary) <= int(salary) <= int(max_salary)
 
     def filter_by_salary_range(
         self, jobs: List[dict], salary: Union[str, int]
     ) -> List[Dict]:
-        pass
+        filtered_data = []
+
+        for job in jobs:
+            min_salary = job.get('min_salary')
+            max_salary = job.get('max_salary')
+
+            if (
+                isinstance(salary, (int, float)) or
+                (isinstance(salary, str) and salary.isdigit())
+            ) and max_salary is not None and min_salary is not None and (
+                str(max_salary).isdigit() and str(min_salary).isdigit()
+            ) and int(min_salary) <= int(max_salary):
+
+                if int(min_salary) <= int(salary) <= int(max_salary):
+                    filtered_data.append(job)
+
+        return filtered_data
